@@ -12,13 +12,18 @@ const firstMiddleware = (store) => (dispatch) => (action) => {
     dispatch(action);
     // 기능추가
 };
-const thunkdMiddleware = (store) => (dispatch) => (action) => {
-    if (typeof action === "function") {
-        // 비동기
-        return action(store.dispatch, store.getState());
-    }
-    return dispatch(action);
-};
+const thunkdMiddleware =
+    ({ dispatch, getState }) =>
+    (dispatch) =>
+    (action) => {
+        if (typeof action === "function") {
+            // 비동기
+            return action(dispatch, getState);
+        }
+        return dispatch(action);
+        // 동기(action이 오브젝트일 경우에는 바로 dispatch해주고)
+        // 비동기(action이 함수일 경우에는 해당함수를 실행시켜라)
+    };
 
 // function fM(store) {
 //     console.log(1);
@@ -37,7 +42,6 @@ const enhancer = compose(
 );
 
 const store = createStore(rootReducer, enhancer);
-console.log(store);
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
