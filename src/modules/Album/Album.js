@@ -23,12 +23,14 @@ const initialState = [
 ];
 
 const countUp = (id) => {
+    // 동기 액션 크리에이터
     return {
         type: COUNT_UP,
         id,
     };
 };
 const countDown = (id) => {
+    // 동기 액션 크리에이터
     return {
         type: COUNT_DOWN,
         id,
@@ -36,19 +38,28 @@ const countDown = (id) => {
 };
 
 const AlbumReducer = (state = initialState, action) => {
+    const copyState = [...state];
     switch (action.type) {
         case COUNT_DOWN:
-            const copyState = [...state];
-            const IndexNumber = copyState.find((value) => {
+            console.log("리듀서가 작동중이다 !!!");
+            copyState.forEach((value) => {
                 if (value.id === action.id) {
-                    value.count - 1;
-                    return value;
+                    if (value.count < 1) {
+                        value.count = 0;
+                    } else {
+                        value.count -= 1;
+                    }
                 }
             });
-            console.log(IndexNumber);
-            return state;
+            return copyState;
         case COUNT_UP:
-            return state;
+            console.log("리듀서가 작동중이다 !!!");
+            copyState.forEach((value) => {
+                if (value.id === action.id) {
+                    value.count += 1;
+                }
+            });
+            return copyState;
         default:
             return state;
     }

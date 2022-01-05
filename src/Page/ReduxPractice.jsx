@@ -5,13 +5,17 @@ import { countUp, countDown } from "../modules/Album/Album";
 const ReduxPractice = () => {
     const dispatch = useDispatch();
     const fetchedAlbum = useSelector((state) => state.AlbumReducer);
+    const loginReducer = useSelector((state) => state.loginReducer);
     const [album, setAlbum] = useState([]);
+    const [loginStatus, setLoginStauts] = useState(loginReducer);
     useEffect(() => {
         setAlbum(fetchedAlbum);
-    }, [fetchedAlbum]);
+        setLoginStauts(loginReducer);
+    }, [fetchedAlbum, loginReducer]);
 
     return (
         <>
+            <div>로그인 상태 : {loginStatus}</div>
             {album.map((value, key) => {
                 return (
                     <div key={key}>
