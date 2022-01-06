@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { countUp, countDown } from "../modules/Album/Album";
+import { countUp, countDown, inputDataCheck } from "../modules/Album/Album";
 import { multipleTwice } from "../modules/Login/login";
 
 const ReduxPractice = () => {
@@ -9,6 +9,25 @@ const ReduxPractice = () => {
     const loginReducer = useSelector((state) => state.loginReducer);
     const [album, setAlbum] = useState([]);
     const [loginStatus, setLoginStauts] = useState(loginReducer);
+
+    const [watingAlbum, setWatingAlbum] = useState(null);
+    const [watingArtist, setWatingArtist] = useState(null);
+    const [watingDate, setWatingDate] = useState(null);
+    let data;
+    useEffect(() => {
+        data = {
+            id: 1234567,
+            artist: watingArtist,
+            album: watingAlbum,
+            count: 100,
+        };
+        setWatingDate(data);
+    }, [watingAlbum, watingArtist]);
+
+    const write = (e, setFunc) => {
+        setFunc(e.currentTarget.value);
+    };
+
     useEffect(() => {
         setAlbum(fetchedAlbum);
     }, [fetchedAlbum]);
@@ -28,13 +47,37 @@ const ReduxPractice = () => {
             >
                 로그인하기
             </button>
+            <button
+                onClick={() => {
+                    dispatch(inputDataCheck(watingDate, "정재훈"));
+                }}
+            >
+                앨범추가
+            </button>
+            <div>
+                <input
+                    onChange={(e) => {
+                        write(e, setWatingAlbum);
+                    }}
+                    type="text"
+                />
+            </div>
+            <div>
+                <input
+                    onChange={(e) => {
+                        write(e, setWatingArtist);
+                    }}
+                    type="text"
+                />
+            </div>
+
             {album.map((value, key) => {
                 return (
                     <div key={key}>
-                        <h2>{value.artist}</h2>
-                        <h3>{value.album}</h3>
-                        <h4>{value.id}</h4>
-                        <h5>{value.count}</h5>
+                        <h2>{value?.artist}</h2>
+                        <h3>{value?.album}</h3>
+                        <h4>{value?.id}</h4>
+                        <h5>{value?.count}</h5>
                         <button
                             onClick={() => {
                                 dispatch(countDown(value.id));

@@ -1,5 +1,8 @@
+import { loginRequest, loginSuccess } from "../Login/login";
+
 const COUNT_UP = "Album/COUNT_UP";
 const COUNT_DOWN = "Album/COUNT_DOWN";
+const INPUT_DATA = "Album/INPUT_DATA";
 
 const initialState = [
     {
@@ -37,6 +40,25 @@ const countDown = (id) => {
     };
 };
 
+const inputDataCheck = (data, userName) => {
+    return (dispatch, getState) => {
+        dispatch(inputData(data));
+        alert(`당신이 구매한 앨범은 ${data?.album}`);
+        dispatch(loginRequest(userName));
+        setTimeout(() => {
+            alert("로그인 완료!!!");
+            dispatch(loginSuccess(`${userName} 님 로그인이 완료됐습니다.`));
+        }, 3000);
+    };
+};
+
+const inputData = (data) => {
+    return {
+        type: INPUT_DATA,
+        data,
+    };
+};
+
 const AlbumReducer = (state = initialState, action) => {
     const copyState = [...state];
     switch (action.type) {
@@ -60,9 +82,12 @@ const AlbumReducer = (state = initialState, action) => {
                 }
             });
             return copyState;
+        case INPUT_DATA:
+            const updateState = [...copyState, action.data];
+            return updateState;
         default:
             return state;
     }
 };
 
-export { AlbumReducer, countUp, countDown };
+export { AlbumReducer, countUp, countDown, inputDataCheck };
