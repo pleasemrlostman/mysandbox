@@ -78,6 +78,9 @@ const ReduxPractice = () => {
                         <h3>{value?.album}</h3>
                         <h4>{value?.id}</h4>
                         <h5>{value?.count}</h5>
+                        <div>
+                            <p>멤버들</p>
+                        </div>
                         <button
                             onClick={() => {
                                 dispatch(countDown(value.id));

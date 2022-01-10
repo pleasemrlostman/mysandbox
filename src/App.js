@@ -6,9 +6,9 @@ import Sandbox from "./Page/Sandbox";
 const App = () => {
     return (
         <>
-            <Immutability />
-            {/* <Sandbox /> */}
-            {/* <ReduxPractice />; */}
+            {/* <Immutability /> */}
+            <Sandbox />
+            <ReduxPractice />;
         </>
     );
 };

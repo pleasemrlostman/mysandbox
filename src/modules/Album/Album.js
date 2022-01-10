@@ -1,3 +1,4 @@
+import produce from "immer";
 import { loginRequest, loginSuccess } from "../Login/login";
 
 const COUNT_UP = "Album/COUNT_UP";
@@ -60,31 +61,30 @@ const inputData = (data) => {
 };
 
 const AlbumReducer = (state = initialState, action) => {
-    const copyState = [...state];
     switch (action.type) {
         case COUNT_DOWN:
-            console.log("리듀서가 작동중이다 !!!");
-            copyState.forEach((value) => {
-                if (value.id === action.id) {
-                    if (value.count < 1) {
-                        value.count = 0;
-                    } else {
-                        value.count -= 1;
-                    }
+            return produce(state, (draft) => {
+                const matchIndex = draft.find(
+                    (value) => value.id === action.id
+                );
+                if (matchIndex.count < 1) {
+                    alert("0 이하를 선택할 수 없습니다.");
+                    matchIndex.count = 0;
+                } else {
+                    matchIndex.count--;
                 }
             });
-            return copyState;
         case COUNT_UP:
-            console.log("리듀서가 작동중이다 !!!");
-            copyState.forEach((value) => {
-                if (value.id === action.id) {
-                    value.count += 1;
-                }
+            return produce(state, (draft) => {
+                const matchIndex = draft.find(
+                    (value) => value.id === action.id
+                );
+                matchIndex.count++;
             });
-            return copyState;
         case INPUT_DATA:
-            const updateState = [...copyState, action.data];
-            return updateState;
+            return produce(state, (draft) => {
+                draft.push(action.data);
+            });
         default:
             return state;
     }
