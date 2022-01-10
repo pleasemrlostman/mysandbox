@@ -1,3 +1,4 @@
+import { createAction, handleActions } from "redux-actions";
 import produce from "immer";
 import { loginRequest, loginSuccess } from "../Login/login";
 
@@ -26,21 +27,22 @@ const initialState = [
     },
 ];
 
-const countUp = (id) => {
-    // 동기 액션 크리에이터
-    return {
-        type: COUNT_UP,
-        id,
-    };
-};
-const countDown = (id) => {
-    // 동기 액션 크리에이터
-    return {
-        type: COUNT_DOWN,
-        id,
-    };
-};
+const countUp = createAction(COUNT_UP, (id) => id);
+const countDown = createAction(COUNT_DOWN, (id) => id);
+const inputData = createAction(INPUT_DATA, (data) => data);
 
+// const countUp = (id) => {
+//     return {
+//         type: COUNT_UP,
+//         id,
+//     };
+// };
+// const countDown = (id) => {
+//     return {
+//         type: COUNT_DOWN,
+//         id,
+//     };
+// };
 const inputDataCheck = (data, userName) => {
     return (dispatch, getState) => {
         dispatch(inputData(data));
@@ -52,42 +54,68 @@ const inputDataCheck = (data, userName) => {
         }, 3000);
     };
 };
+// const inputData = (data) => {
+//     return {
+//         type: INPUT_DATA,
+//         data,
+//     };
+// };
 
-const inputData = (data) => {
-    return {
-        type: INPUT_DATA,
-        data,
-    };
-};
-
-const AlbumReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case COUNT_DOWN:
+export default handleActions(
+    {
+        [COUNT_UP]: (state, action) => {
             return produce(state, (draft) => {
                 const matchIndex = draft.find(
-                    (value) => value.id === action.id
-                );
-                if (matchIndex.count < 1) {
-                    alert("0 이하를 선택할 수 없습니다.");
-                    matchIndex.count = 0;
-                } else {
-                    matchIndex.count--;
-                }
-            });
-        case COUNT_UP:
-            return produce(state, (draft) => {
-                const matchIndex = draft.find(
-                    (value) => value.id === action.id
+                    (value) => value.id === action.payload
                 );
                 matchIndex.count++;
             });
-        case INPUT_DATA:
+        },
+        [COUNT_DOWN]: (state, action) =>
+            produce(state, (draft) => {
+                const matchIndex = draft.find(
+                    (value) => value.id === action.payload
+                );
+                matchIndex.count--;
+            }),
+        [INPUT_DATA]: (state, action) => {
+            console.log(action.payload);
             return produce(state, (draft) => {
-                draft.push(action.data);
+                draft.push(action.payload);
             });
-        default:
-            return state;
-    }
-};
+        },
+    },
+    initialState
+);
 
-export { AlbumReducer, countUp, countDown, inputDataCheck };
+// const AlbumReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//         case COUNT_DOWN:
+//             return produce(state, (draft) => {
+//                 const matchIndex = draft.find(
+//                     (value) => value.id === action.payload
+//                 );
+//                 if (matchIndex.count < 1) {
+//                     alert("0 이하를 선택할 수 없습니다.");
+//                     matchIndex.count = 0;
+//                 } else {
+//                     matchIndex.count--;
+//                 }
+//             });
+//         case COUNT_UP:
+//             return produce(state, (draft) => {
+//                 const matchIndex = draft.find(
+//                     (value) => value.id === action.payload
+//                 );
+//                 matchIndex.count++;
+//             });
+//         case INPUT_DATA:
+//             return produce(state, (draft) => {
+//                 draft.push(action.data);
+//             });
+//         default:
+//             return state;
+//     }
+// };
+
+export { countUp, countDown, inputDataCheck };
