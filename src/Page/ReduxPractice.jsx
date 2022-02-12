@@ -34,7 +34,7 @@ const ReduxPractice = () => {
     useEffect(() => {
         setLoginStauts(loginReducer);
         // setState는 비동기적으로 발생하기 때문에 콘솔에 이전값이 찍히는거다
-        console.log(loginReducer);
+        // console.log(loginReducer);
     }, [loginReducer]);
 
     return (

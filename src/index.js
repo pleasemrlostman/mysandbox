@@ -42,7 +42,7 @@ const enhancer = compose(
 );
 
 const store = createStore(rootReducer, enhancer);
-console.log(store);
+// console.log(store);
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
