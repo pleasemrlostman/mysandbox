@@ -16,7 +16,7 @@ const ReactHookFormPractice = () => {
             inputRadio: "햄버거",
         },
     });
-
+    
     const onSubmit = (data) => console.log(data);
 
     return (
